@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 04 — Palindrome Checker</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #9B7EC8;
+      --accent-soft: #F3EEF9;
+      --bg-page: #FBEFEF;
+    }
+    .char-display { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 16px 0; min-height: 42px; }
+    .char-box { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-family: var(--font-code); font-weight: 600; font-size: 1rem; border: 2px solid var(--border); background: var(--bg-card); transition: all 0.3s ease; }
+    .char-box.match { border-color: #22C55E; background: #DCFCE7; color: #16A34A; }
+    .char-box.mismatch { border-color: #EF4444; background: #FEE2E2; color: #DC2626; }
+    .result-banner { text-align: center; padding: 20px; border-radius: var(--radius); margin: 16px 0; font-size: 1.1rem; font-weight: 600; display: none; }
+    .result-banner.show { display: block; animation: fadeIn 0.35s ease; }
+    .result-banner.is-palindrome { background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; }
+    .result-banner.not-palindrome { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-input); border-radius: var(--radius-xs); margin-bottom: 6px; font-size: 0.85rem; }
+    .history-item .word { font-family: var(--font-code); font-weight: 500; }
+    .cleaned-text { font-family: var(--font-code); background: var(--bg-input); padding: 8px 14px; border-radius: var(--radius-xs); font-size: 0.88rem; color: var(--text-secondary); margin-top: 8px; }
+    .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 04</span>
+      <h1>Palindrome Checker</h1>
+      <p>Using functions, scope, closures, and try-catch to check palindromes with visual comparison.</p>
+    </header>
+
+    <div class="workspace-grid">
+      <!-- Left Column: Inputs -->
+      <div class="left-col">
+        <!-- Input -->
+        <div class="card">
+          <div class="card-title"><span class="icon">🔤</span> Enter Text</div>
+          <div class="form-group">
+            <label for="textInput">Word or Phrase</label>
+            <input class="input" id="textInput" type="text" placeholder="e.g. racecar, A man a plan a canal Panama">
+          </div>
+          <button class="btn btn-primary" id="btnCheck">Check Palindrome</button>
+        </div>
+      </div>
+
+      <!-- Right Column: Results & History -->
+      <div class="right-col">
+        <!-- Comparison -->
+        <div class="card" id="comparisonCard" style="display:none;">
+          <div class="card-title"><span class="icon">🔍</span> Character Comparison</div>
+          <p class="text-sm text-muted">Original → Cleaned:</p>
+          <div class="cleaned-text" id="cleanedText"></div>
+          <div class="char-display" id="charDisplay"></div>
+          <div class="result-banner" id="resultBanner"></div>
+        </div>
+
+        <!-- History -->
+        <div class="card">
+          <div class="card-title flex justify-between items-center">
+            <span><span class="icon">📋</span> History</span>
+            <button class="btn btn-secondary btn-sm" id="btnClear">Clear</button>
+          </div>
+          <div id="historyList">
+            <p class="text-muted text-sm">No checks yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

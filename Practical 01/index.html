@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 01 — JS Execution & Console Methods</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #FE7F2D;
+      --accent-soft: #FFF3EB;
+      --bg-page: #FAFAFA;
+    }
+    .js-type-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .js-type-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; }
+    .js-type-card .tag { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; text-transform: uppercase; }
+    .js-type-card h3 { font-size: 0.92rem; margin-bottom: 6px; }
+    .js-type-card p { font-size: 0.78rem; color: var(--text-muted); }
+    .welcome-banner { background: linear-gradient(135deg, #FE7F2D, #FCAB64); color: #fff; border-radius: var(--radius); padding: 24px; text-align: center; margin-bottom: 20px; }
+    .welcome-banner h2 { font-size: 1.3rem; margin-bottom: 4px; }
+    .welcome-banner p { opacity: 0.9; font-size: 0.88rem; }
+    @media (max-width: 600px) { .js-type-cards { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 01</span>
+      <h1>JavaScript Execution & Console Methods</h1>
+      <p>Demonstrating inline, internal, and external JavaScript with console.log(), console.error(), console.table(), and console.trace().</p>
+    </header>
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner" id="welcomeBanner">
+      <h2 id="welcomeMsg">Welcome!</h2>
+      <p id="welcomeTime"></p>
+    </div>
+
+    <!-- JS Types -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📜</span> Types of JavaScript</div>
+      <div class="js-type-cards">
+        <div class="js-type-card">
+          <span class="tag">Inline JS</span>
+          <h3>onclick Attribute</h3>
+          <p>Runs directly in an HTML attribute.</p>
+          <button class="btn btn-primary btn-sm mt-1" onclick="alert('Hello from Inline JavaScript!')">Try Inline JS</button>
+        </div>
+        <div class="js-type-card">
+          <span class="tag">Internal JS</span>
+          <h3>&lt;script&gt; Block</h3>
+          <p>Written inside a script tag in HTML.</p>
+          <button class="btn btn-primary btn-sm mt-1" id="btnInternal">Try Internal JS</button>
+        </div>
+        <div class="js-type-card">
+          <span class="tag">External JS</span>
+          <h3>script.js File</h3>
+          <p>Loaded from a separate .js file.</p>
+          <button class="btn btn-primary btn-sm mt-1" id="btnExternal">Try External JS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Environment Info -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🖥️</span> User Environment Info</div>
+      <div class="info-grid" id="envGrid">
+        <!-- Filled by script.js -->
+      </div>
+    </div>
+
+    <!-- Console Methods -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🛠️</span> Console Methods Demo</div>
+      <p class="text-sm text-muted mb-2">Click the buttons below to trigger different console methods. Output appears in the panel below.</p>
+      <div class="flex flex-wrap gap-sm">
+        <button class="btn btn-secondary btn-sm" id="btnLog">console.log()</button>
+        <button class="btn btn-secondary btn-sm" id="btnError">console.error()</button>
+        <button class="btn btn-secondary btn-sm" id="btnTable">console.table()</button>
+        <button class="btn btn-secondary btn-sm" id="btnTrace">console.trace()</button>
+      </div>
+      <div id="consoleOutput" class="mt-2"></div>
+    </div>
+  </div>
+
+  <!-- Internal JS -->
+  <script>
+    document.getElementById('btnInternal').addEventListener('click', function() {
+      alert('Hello from Internal JavaScript! (written inside a <script> tag)');
+    });
+  </script>
+
+  <!-- Console Emulator (must load before script.js) -->
+  <script src="../shared/console-emulator.js"></script>
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
+</html>

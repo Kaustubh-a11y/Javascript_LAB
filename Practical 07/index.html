@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 07 — To-Do List</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #659287;
+      --accent-soft: #E6F2DD;
+      --bg-page: #F5F9F4;
+    }
+    .add-bar { display: flex; gap: 10px; }
+    .add-bar .input { flex: 1; }
+    .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+    .filter-btn { padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-card); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
+    .filter-btn:hover { border-color: var(--accent); }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .todo-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; transition: all 0.2s; }
+    .todo-item:hover { box-shadow: var(--shadow-sm); }
+    .todo-item.completed .todo-text { text-decoration: line-through; color: var(--text-muted); }
+    .todo-item .checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+    .todo-item.completed .checkbox { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .todo-text { flex: 1; font-size: 0.9rem; }
+    .todo-text input { border: none; background: var(--bg-input); padding: 4px 8px; border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; width: 100%; }
+    .priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .priority-dot.high { background: #EF4444; }
+    .priority-dot.medium { background: #F59E0B; }
+    .priority-dot.low { background: #22C55E; }
+    .todo-actions { display: flex; gap: 4px; }
+    .todo-actions button { background: none; border: none; cursor: pointer; font-size: 0.9rem; padding: 4px; opacity: 0.5; transition: opacity 0.2s; }
+    .todo-actions button:hover { opacity: 1; }
+    .counter-badge { background: var(--accent-soft); color: var(--accent); padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 07</span>
+      <h1>To-Do List App</h1>
+      <p>DOM traversal and manipulation — add, edit, delete, and filter tasks with priority levels.</p>
+    </header>
+
+    <!-- Add Task -->
+    <div class="card">
+      <div class="card-title"><span class="icon">✏️</span> Add New Task</div>
+      <div class="add-bar">
+        <input class="input" id="taskInput" type="text" placeholder="What needs to be done?">
+        <select class="select" id="prioritySelect" style="width: 120px; flex: none;">
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="low">Low</option>
+        </select>
+        <button class="btn btn-primary" id="btnAdd">Add</button>
+      </div>
+    </div>
+
+    <!-- Filter & List -->
+    <div class="card">
+      <div class="flex justify-between items-center mb-2">
+        <div class="card-title" style="margin-bottom: 0;"><span class="icon">📋</span> Tasks</div>
+        <span class="counter-badge" id="taskCounter">0 tasks</span>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="active">Active</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+      </div>
+      <div id="todoList">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">📝</div>
+          <p>No tasks yet. Add one above!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

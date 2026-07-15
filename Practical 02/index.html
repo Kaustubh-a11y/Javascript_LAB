@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 02 — Billing Calculator</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #778873;
+      --accent-soft: #EFF3ED;
+      --bg-page: #FDF6ED;
+    }
+    .receipt-card {
+      background: #FFFDF8;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      line-height: 1.8;
+      display: none;
+    }
+    .receipt-card.show { display: block; animation: fadeIn 0.35s ease; }
+    .receipt-card h3 { text-align: center; font-family: var(--font-body); font-size: 1.1rem; margin-bottom: 4px; }
+    .receipt-card .divider { border: none; border-top: 1px dashed var(--border); margin: 10px 0; }
+    .receipt-line { display: flex; justify-content: space-between; }
+    .receipt-total { font-weight: 700; font-size: 1rem; color: var(--accent); }
+    .items-list { margin-top: 10px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-input); border-radius: var(--radius-xs); margin-bottom: 6px; font-size: 0.85rem; }
+    .item-row .remove-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1rem; padding: 0 4px; }
+    .item-row .remove-btn:hover { opacity: 0.7; }
+    .workspace-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 02</span>
+      <h1>Billing Calculator</h1>
+      <p>Using var, let, const, template literals, and destructuring to build an invoice system.</p>
+    </header>
+
+    <div class="workspace-grid">
+      <!-- Left Column: Bill Options & Receipt (Bill) -->
+      <div class="left-col">
+        <!-- GST & Generate (Bill Options) -->
+        <div class="card">
+          <div class="card-title"><span class="icon">🧾</span> Bill Options</div>
+          <div class="flex items-center gap-sm mb-2">
+            <input type="checkbox" id="gstToggle" checked>
+            <label for="gstToggle" style="font-size:0.88rem; cursor:pointer;">Apply GST (18%)</label>
+          </div>
+          <button class="btn btn-primary" id="btnGenerate">Generate Bill</button>
+        </div>
+
+        <!-- Receipt (Bill) -->
+        <div class="receipt-card" id="receipt">
+          <h3 id="receiptStore">QuickMart</h3>
+          <p class="text-center text-muted text-sm" id="receiptDate"></p>
+          <hr class="divider">
+          <div class="receipt-line"><span>Customer:</span><span id="receiptCust">-</span></div>
+          <hr class="divider">
+          <div id="receiptItems"></div>
+          <hr class="divider">
+          <div class="receipt-line"><span>Subtotal:</span><span id="receiptSub">₹0.00</span></div>
+          <div class="receipt-line" id="receiptGstRow"><span>GST (18%):</span><span id="receiptGst">₹0.00</span></div>
+          <hr class="divider">
+          <div class="receipt-line receipt-total"><span>Total:</span><span id="receiptTotal">₹0.00</span></div>
+          <p class="text-center text-muted text-sm mt-2">Thank you for shopping!</p>
+        </div>
+      </div>
+
+      <!-- Right Column: Customer Details & Add Items -->
+      <div class="right-col">
+        <!-- Customer Info -->
+        <div class="card">
+          <div class="card-title"><span class="icon">👤</span> Customer Details</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custName">Customer Name</label>
+              <input class="input" id="custName" type="text" placeholder="e.g. Kaustubh Kachole">
+            </div>
+            <div class="form-group">
+              <label for="storeName">Store Name</label>
+              <input class="input" id="storeName" type="text" placeholder="e.g. FreshMart" value="QuickMart">
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Items -->
+        <div class="card">
+          <div class="card-title"><span class="icon">🛒</span> Add Items</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="itemName">Item Name</label>
+              <input class="input" id="itemName" type="text" placeholder="e.g. Notebook">
+            </div>
+            <div class="form-group">
+              <label for="itemQty">Quantity</label>
+              <input class="input" id="itemQty" type="number" min="1" value="1">
+            </div>
+            <div class="form-group">
+              <label for="itemPrice">Price (₹)</label>
+              <input class="input" id="itemPrice" type="number" min="0" step="0.01" placeholder="e.g. 49.99">
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnAddItem">+ Add Item</button>
+
+          <div class="items-list" id="itemsList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

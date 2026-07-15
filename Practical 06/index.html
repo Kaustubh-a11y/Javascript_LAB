@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 06 — String & Regex Analyzer</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #4274D9;
+      --accent-soft: #EBF0FF;
+      --bg-page: #F4F7FB;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat-box { text-align: center; padding: 14px 10px; background: var(--bg-input); border-radius: var(--radius-sm); }
+    .stat-box .num { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .stat-box .lbl { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.3px; margin-top: 2px; }
+    .extracted-section { margin-bottom: 14px; }
+    .extracted-section h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .extracted-section .tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 500; margin: 2px 4px 2px 0; }
+    .tag-email { background: #DBEAFE; color: #1D4ED8; }
+    .tag-phone { background: #DCFCE7; color: #16A34A; }
+    .tag-hashtag { background: #EDE9FE; color: #7C3AED; }
+    .tag-url { background: #FEF3C7; color: #92400E; }
+    .pattern-display { font-family: var(--font-code); font-size: 0.78rem; background: var(--bg-input); padding: 6px 12px; border-radius: var(--radius-xs); color: var(--text-secondary); margin-top: 6px; word-break: break-all; }
+    .highlighted-text { font-size: 0.9rem; line-height: 1.8; padding: 14px; background: var(--bg-input); border-radius: var(--radius-sm); word-wrap: break-word; }
+    .highlighted-text .hl-email { background: #DBEAFE; padding: 1px 4px; border-radius: 3px; }
+    .highlighted-text .hl-phone { background: #DCFCE7; padding: 1px 4px; border-radius: 3px; }
+    .highlighted-text .hl-hashtag { background: #EDE9FE; padding: 1px 4px; border-radius: 3px; }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 06</span>
+      <h1>String & Regex Analyzer</h1>
+      <p>Using string functions and regular expressions for email validation, data extraction, and text analysis.</p>
+    </header>
+
+    <!-- Input -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📝</span> Enter Text</div>
+      <div class="form-group">
+        <label for="textArea">Paste or type any text (try including emails, phone numbers, hashtags)</label>
+        <textarea class="textarea" id="textArea" rows="5" placeholder="e.g. Contact Kaustubh Kachole at kaustubh.kachole.batch2024@sitnagpur.siu.edu.in or call 9999999999. Follow #JavaScript #SITNagpur for tips!"></textarea>
+      </div>
+      <button class="btn btn-primary" id="btnAnalyze">Analyze Text</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="card" id="statsCard" style="display:none;">
+      <div class="card-title"><span class="icon">📊</span> Text Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="num" id="charCount">0</div><div class="lbl">Characters</div></div>
+        <div class="stat-box"><div class="num" id="wordCount">0</div><div class="lbl">Words</div></div>
+        <div class="stat-box"><div class="num" id="sentenceCount">0</div><div class="lbl">Sentences</div></div>
+        <div class="stat-box"><div class="num" id="readTime">0</div><div class="lbl">Min Read</div></div>
+      </div>
+    </div>
+
+    <!-- Extracted Data -->
+    <div class="card" id="extractCard" style="display:none;">
+      <div class="card-title"><span class="icon">🔎</span> Extracted Data</div>
+      <div id="extractResults"></div>
+    </div>
+
+    <!-- Highlighted Text -->
+    <div class="card" id="highlightCard" style="display:none;">
+      <div class="card-title"><span class="icon">🎨</span> Highlighted View</div>
+      <div class="highlighted-text" id="highlightedText"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

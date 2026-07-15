@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 09 — Storage & Preferences</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #B07D4B;
+      --accent-soft: #FFF5E8;
+      --bg-page: #FFEED6;
+    }
+    .greeting-banner { background: linear-gradient(135deg, #E8A07C, #B07D4B); color: #fff; border-radius: var(--radius); padding: 24px; text-align: center; margin-bottom: 20px; }
+    .greeting-banner h2 { font-size: 1.3rem; }
+    .greeting-banner p { opacity: 0.9; font-size: 0.88rem; }
+    .preference-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pref-btn { padding: 8px 18px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-card); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .pref-btn:hover { border-color: var(--accent); }
+    .pref-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .session-counter { font-size: 3rem; font-weight: 700; color: var(--accent); text-align: center; padding: 20px; }
+    .storage-inspector { background: #1E1E2E; border-radius: var(--radius-sm); padding: 14px; font-family: var(--font-code); font-size: 0.78rem; color: #CDD6F4; max-height: 250px; overflow-y: auto; }
+    .storage-inspector .kv-row { display: flex; gap: 10px; padding: 4px 0; border-bottom: 1px solid #2A2A3C; }
+    .storage-inspector .kv-row:last-child { border-bottom: none; }
+    .storage-inspector .kv-key { color: #89B4FA; min-width: 120px; }
+    .storage-inspector .kv-val { color: #A6E3A1; word-break: break-all; }
+    .storage-inspector .kv-type { color: #8A94A6; font-size: 0.7rem; min-width: 70px; text-align: right; }
+    .toggle-theme { display: flex; align-items: center; gap: 12px; }
+    .toggle-track { width: 48px; height: 26px; background: var(--border); border-radius: 999px; position: relative; cursor: pointer; transition: background 0.3s; }
+    .toggle-track.on { background: var(--accent); }
+    .toggle-track .toggle-thumb { width: 22px; height: 22px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle-track.on .toggle-thumb { transform: translateX(22px); }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 09</span>
+      <h1>Storage & Preferences</h1>
+      <p>Using localStorage and sessionStorage to persist user preferences across browser sessions.</p>
+    </header>
+
+    <!-- Greeting -->
+    <div class="greeting-banner" id="greetingBanner">
+      <h2 id="greetingMsg">Welcome!</h2>
+      <p id="greetingInfo">Set your username below to personalize.</p>
+    </div>
+
+    <!-- Username -->
+    <div class="card">
+      <div class="card-title"><span class="icon">👤</span> Username (localStorage)</div>
+      <p class="text-sm text-muted mb-2">Saved in localStorage — persists even after browser is closed.</p>
+      <div class="flex gap-sm">
+        <input class="input" id="usernameInput" type="text" placeholder="e.g. Kaustubh Kachole" style="flex:1;">
+        <button class="btn btn-primary" id="btnSaveUsername">Save</button>
+      </div>
+    </div>
+
+    <!-- Font Size -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🔤</span> Font Size (localStorage)</div>
+      <p class="text-sm text-muted mb-2">Your font size preference is remembered on next visit.</p>
+      <div class="preference-group" id="fontSizeGroup">
+        <button class="pref-btn" data-size="14">Small</button>
+        <button class="pref-btn" data-size="16">Medium</button>
+        <button class="pref-btn" data-size="18">Large</button>
+        <button class="pref-btn" data-size="20">Extra Large</button>
+      </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎨</span> Color Theme (localStorage)</div>
+      <p class="text-sm text-muted mb-2">Toggle between warm and cool accent colors.</p>
+      <div class="toggle-theme">
+        <span>Warm 🌅</span>
+        <div class="toggle-track" id="themeToggle">
+          <div class="toggle-thumb"></div>
+        </div>
+        <span>Cool 🌊</span>
+      </div>
+    </div>
+
+    <!-- Session Counter -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🔢</span> Session Counter (sessionStorage)</div>
+      <p class="text-sm text-muted mb-2">Counts actions in this session only — resets when you close the tab.</p>
+      <div class="session-counter" id="sessionCount">0</div>
+      <div class="flex gap-sm justify-between">
+        <button class="btn btn-primary btn-sm" id="btnIncrement">+ Increment</button>
+        <button class="btn btn-secondary btn-sm" id="btnResetSession">Reset</button>
+      </div>
+    </div>
+
+    <!-- Storage Inspector -->
+    <div class="card">
+      <div class="card-title flex justify-between items-center">
+        <span><span class="icon">🔍</span> Storage Inspector</span>
+        <button class="btn btn-danger btn-sm" id="btnClearAll">Clear All</button>
+      </div>
+      <p class="text-sm text-muted mb-2">Live view of what's stored in your browser.</p>
+      <h4 style="font-size:0.82rem; margin:8px 0 4px; color:var(--text-secondary);">localStorage</h4>
+      <div class="storage-inspector" id="localStorageView"></div>
+      <h4 style="font-size:0.82rem; margin:12px 0 4px; color:var(--text-secondary);">sessionStorage</h4>
+      <div class="storage-inspector" id="sessionStorageView"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

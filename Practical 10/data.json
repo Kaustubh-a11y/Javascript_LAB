@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Kaustubh Kachole", "email": "kaustubh.kachole.batch2024@sitnagpur.siu.edu.in", "role": "Developer", "status": "Active", "joined": "2024-01-15" },
+  { "id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "Designer", "status": "Active", "joined": "2024-02-20" },
+  { "id": 3, "name": "Charlie Brown", "email": "charlie@example.com", "role": "Manager", "status": "Inactive", "joined": "2023-06-10" },
+  { "id": 4, "name": "Diana Prince", "email": "diana@example.com", "role": "Developer", "status": "Active", "joined": "2024-03-05" },
+  { "id": 5, "name": "Eve Wilson", "email": "eve@example.com", "role": "QA Tester", "status": "On Leave", "joined": "2023-11-22" },
+  { "id": 6, "name": "Frank Miller", "email": "frank@example.com", "role": "DevOps", "status": "Active", "joined": "2024-04-12" },
+  { "id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Designer", "status": "Active", "joined": "2024-01-30" },
+  { "id": 8, "name": "Henry Adams", "email": "henry@example.com", "role": "Developer", "status": "Inactive", "joined": "2023-09-18" },
+  { "id": 9, "name": "Ivy Chen", "email": "ivy@example.com", "role": "Manager", "status": "Active", "joined": "2024-05-01" },
+  { "id": 10, "name": "Jack Davis", "email": "jack@example.com", "role": "QA Tester", "status": "Active", "joined": "2024-02-14" }
+]

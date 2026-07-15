@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 10 — JSON Data Table</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    :root {
+      --accent: #D0311E;
+      --accent-soft: #FDECEA;
+      --bg-page: #FFFBF0;
+    }
+    .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
+    .search-bar .input { flex: 1; }
+    .sort-header { cursor: pointer; user-select: none; }
+    .sort-header:hover { color: var(--accent); }
+    .sort-header .sort-icon { font-size: 0.72rem; margin-left: 4px; opacity: 0.4; }
+    .sort-header.asc .sort-icon, .sort-header.desc .sort-icon { opacity: 1; }
+    .role-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+    .role-developer { background: #DBEAFE; color: #1D4ED8; }
+    .role-designer { background: #EDE9FE; color: #7C3AED; }
+    .role-manager { background: #FEF3C7; color: #92400E; }
+    .role-qa { background: #DCFCE7; color: #16A34A; }
+    .role-devops { background: #FFE4E6; color: #BE123C; }
+    .skeleton-row { height: 44px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; margin-bottom: 6px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .table-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 0.82rem; color: var(--text-muted); }
+    .fetch-method { display: inline-flex; gap: 8px; }
+    .method-btn { padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-card); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .method-btn:hover { border-color: var(--accent); }
+    .method-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge">Practical 10</span>
+      <h1>JSON Data Table</h1>
+      <p>Loading JSON data via fetch() and jQuery $.getJSON(), rendering in a sortable, searchable table.</p>
+    </header>
+
+    <!-- Fetch Method Selector -->
+    <div class="card">
+      <div class="card-title"><span class="icon">⚡</span> Load Method</div>
+      <p class="text-sm text-muted mb-2">Choose how to fetch the JSON data:</p>
+      <div class="fetch-method">
+        <button class="method-btn active" id="btnFetch">fetch() API</button>
+        <button class="method-btn" id="btnJquery">jQuery $.getJSON</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="card-title flex justify-between items-center">
+        <span><span class="icon">📊</span> Team Members</span>
+        <span class="counter-badge" id="rowCount" style="background:var(--accent-soft); color:var(--accent);">0 rows</span>
+      </div>
+      <div class="search-bar">
+        <input class="input" id="searchInput" type="text" placeholder="Search by name, email, or role...">
+      </div>
+      <div id="loadingState">
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+      </div>
+      <div class="table-wrap" id="tableWrap" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th class="sort-header" data-key="id">ID <span class="sort-icon">↕</span></th>
+              <th class="sort-header" data-key="name">Name <span class="sort-icon">↕</span></th>
+              <th class="sort-header" data-key="email">Email <span class="sort-icon">↕</span></th>
+              <th class="sort-header" data-key="role">Role <span class="sort-icon">↕</span></th>
+              <th class="sort-header" data-key="status">Status <span class="sort-icon">↕</span></th>
+              <th class="sort-header" data-key="joined">Joined <span class="sort-icon">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state hidden" id="noResults">
+        <div class="empty-icon">🔍</div>
+        <p>No results match your search.</p>
+      </div>
+      <div class="table-footer" id="tableFooter" style="display:none;">
+        <span id="footerInfo">Showing 0 of 0</span>
+        <span id="footerMethod">Loaded via: -</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
