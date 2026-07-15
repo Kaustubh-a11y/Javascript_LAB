@@ -18,10 +18,7 @@ A collection of **10 JavaScript laboratory practicals** built using **HTML, CSS,
 
 ## 📁 Project Structure
 
-The practicals share common resources:
-
-- **`shared.css`** – Common styles, reusable UI components, and layout utilities.
-- **`console-emulator.js`** – Displays JavaScript console output (`console.log`, `console.error`, `console.table`, etc.) directly on the webpage for easier debugging.
+The practicals share:
 
 ---
 
