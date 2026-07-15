@@ -1,7 +1,7 @@
 # ⚡ JavaScript Lab Practicals
 <!-- Animated Heading -->
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=F7DF1E&center=true&vCenter=true&width=700&lines=JavaScript+Lab+Practicals;10+Interactive+JavaScript+Programs;HTML+%7C+CSS+%7C+Vanilla+JavaScript;Built+for+Learning+JavaScript" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=F7DF1E&center=true&vCenter=true&width=700&lines=JavaScript+Lab+Practicals;12+Interactive+JavaScript+Programs;HTML+%7C+CSS+%7C+Vanilla+JavaScript;Built+for+Learning+JavaScript" />
 </p>
 
 <!-- Badges -->
@@ -9,16 +9,19 @@
   <img src="https://visitor-badge.laobi.icu/badge?page_id=Kaustubh-a11y.JAVASCRIPT_LAB&left_text=Visitors"/>
   <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000"/>
-  <img src="https://img.shields.io/badge/Practicals-10-0A66C2?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Practicals-12-0A66C2?style=for-the-badge"/>
 </p>
 
-A collection of **10 JavaScript laboratory practicals** built using **HTML, CSS, and Vanilla JavaScript**. Each practical demonstrates different JavaScript concepts through interactive web-based exercises with a consistent UI and responsive design.
+A collection of **12 JavaScript laboratory practicals** built using **HTML, CSS, and Vanilla JavaScript**. Each practical demonstrates different JavaScript concepts through interactive web-based exercises with a consistent UI and responsive design.
 
 ---
 
 ## 📁 Project Structure
 
 The practicals share:
+- Modular JavaScript implementations
+- Responsive and modern UI design
+- Real-time interaction and state handling
 
 ---
 
@@ -63,6 +66,22 @@ The practicals share:
 ### 10. Dynamic JSON Data Grid
 - **Location:** `Practical 10/`
 - Displays local JSON data with search, sorting, and filtering.
+
+### 11. Medication Routine Scheduler
+- **Location:** `Practical 11/`
+- Uses JavaScript timers (`setTimeout()`, `setInterval()`) and ES6 modules (`import`/`export`) to build a dynamic countdown scheduler with real-time updates.
+
+### 12. Smart City Transit Tracker
+- **Location:** `Practical 12/`
+- Real-time interactive web app using JavaScript and jQuery with DOM manipulation, custom events, `localStorage` state persistence, and AJAX integration.
+
+---
+
+## 📑 Lab Reports
+
+The complete lab documentation is available in the `Report/` directory:
+- **Hard Copy Report:** `Report/24070521098_Kaustubh_Kachole_B1.pdf`
+- **Soft Copy Report:** `Report/24070521098_Kaustubh_Kachole_B1_Soft.pdf`
 
 ---
 
