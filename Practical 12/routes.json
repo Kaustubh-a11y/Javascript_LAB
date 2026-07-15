@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-11-16T14:30:00Z",
+  "status": "online",
+  "city": "Nagpur Metro & Transit Authority",
+  "routes": [
+    {
+      "id": "metro-line-1",
+      "lineName": "Orange Line: Sitabuldi Interchange",
+      "type": "Rapid Metro",
+      "platform": "Platform 2 (Southbound)",
+      "estimatedArrivalMins": 3,
+      "headwayMins": 6,
+      "crowdLevel": "Moderate",
+      "crowdClass": "crowd-mod",
+      "coaches": 6,
+      "fare": "₹20.00",
+      "status": "On Time",
+      "icon": "🚇"
+    },
+    {
+      "id": "shuttle-ev-42",
+      "lineName": "Route 42: SIT Campus Express Shuttle",
+      "type": "EV Smart Bus",
+      "platform": "Hostel Gate ➔ Academic Block",
+      "estimatedArrivalMins": 7,
+      "headwayMins": 12,
+      "crowdLevel": "Low",
+      "crowdClass": "crowd-low",
+      "coaches": 1,
+      "fare": "Free (Campus Pass)",
+      "status": "In Transit",
+      "icon": "🚌"
+    },
+    {
+      "id": "feeder-108",
+      "lineName": "Route 108: Metro Feeder Connector",
+      "type": "AC City Bus",
+      "platform": "Nagpur Railway Station Terminal",
+      "estimatedArrivalMins": 12,
+      "headwayMins": 15,
+      "crowdLevel": "Crowded",
+      "crowdClass": "crowd-high",
+      "coaches": 1,
+      "fare": "₹15.00",
+      "status": "Normal Flow",
+      "icon": "🚍"
+    },
+    {
+      "id": "metro-line-2",
+      "lineName": "Aqua Line: Prajapati Nagar Direct",
+      "type": "Rapid Metro",
+      "platform": "Platform 1 (Eastbound)",
+      "estimatedArrivalMins": 18,
+      "headwayMins": 8,
+      "crowdLevel": "Low",
+      "crowdClass": "crowd-low",
+      "coaches": 4,
+      "fare": "₹25.00",
+      "status": "On Time",
+      "icon": "🚇"
+    },
+    {
+      "id": "airport-express",
+      "lineName": "Airport Aero-Link Shuttle",
+      "type": "Premium Express",
+      "platform": "MIHAN SEZ ➔ Airport Terminal",
+      "estimatedArrivalMins": 25,
+      "headwayMins": 30,
+      "crowdLevel": "Low",
+      "crowdClass": "crowd-low",
+      "coaches": 1,
+      "fare": "₹50.00",
+      "status": "Boarding",
+      "icon": "✈️"
+    }
+  ]
+}

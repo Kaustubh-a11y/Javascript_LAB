@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 11 — Healthcare Medication & Clinical Routine Scheduler</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <style>
+    :root {
+      --accent: #BE185D;
+      --accent-soft: #FCE7F3;
+      --bg-page: #FFF1F2;
+    }
+
+    .clock-banner {
+      background: linear-gradient(135deg, #BE185D 0%, #0D9488 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+    .clock-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .clock-digits {
+      font-family: var(--font-code);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .alert-banner {
+      display: none;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .med-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .med-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .med-card.due-soon {
+      border-left-color: #E11D48 !important;
+      background: #FFFDFD;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .unit-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-input);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .med-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .generic-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: -6px;
+    }
+    .doctor-sub {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .instructions-sub {
+      font-size: 0.8rem;
+      color: #4B5563;
+      background: #F9FAFB;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .countdown-box {
+      background: var(--bg-input);
+      border-radius: var(--radius-xs);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .countdown-box.expired {
+      background: #DCFCE7;
+      color: #16A34A;
+    }
+    .cd-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .cd-digits {
+      font-family: var(--font-code);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .progress-bar-bg {
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    .controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 30px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge" style="background:#FCE7F3; color:#BE185D;">Practical 11 (VA 11)</span>
+      <h1>Healthcare Patient Medication & Clinical Routine Scheduler</h1>
+      <p>Built with ES6 Modules (import/export) and JavaScript Timers (setTimeout, setInterval).</p>
+    </header>
+
+    <!-- Digital Clock Banner -->
+    <div class="clock-banner">
+      <div>
+        <div class="clock-title">Clinical ChronoSync Precision Master Clock</div>
+        <div style="font-size:0.85rem; opacity:0.85; margin-top:4px;">Tick Frequency: 1000ms | Macro-task Event Loop</div>
+      </div>
+      <div class="clock-digits" id="liveClock">--:--:-- --</div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner" id="alertBanner"></div>
+
+    <!-- Active Schedules Grid -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card-title flex justify-between items-center">
+        <span><span class="icon">💊</span> Active Medication Prescriptions & Lab Routines</span>
+        <span class="counter-badge" style="background:var(--accent-soft); color:var(--accent);">Live Timers Running</span>
+      </div>
+      <div class="med-grid" id="medicationGrid"></div>
+    </div>
+
+    <!-- Add Custom Event Form -->
+    <div class="controls-panel">
+      <div class="card-title" style="margin-bottom:16px;">
+        <span class="icon">➕</span> Register New Prescription / Diagnostic Appointment
+      </div>
+      <form id="addRoutineForm">
+        <div class="form-grid">
+          <div>
+            <label class="label">Medication Name</label>
+            <input class="input" id="inputMedication" type="text" placeholder="e.g. Amoxicillin 500mg" required>
+          </div>
+          <div>
+            <label class="label">Generic Component</label>
+            <input class="input" id="inputGeneric" type="text" placeholder="e.g. Broad-Spectrum Antibiotic" required>
+          </div>
+          <div>
+            <label class="label">Attending Physician</label>
+            <input class="input" id="inputDoctor" type="text" placeholder="e.g. Dr. H. Patel" required>
+          </div>
+          <div>
+            <label class="label">Dose In (Minutes)</label>
+            <input class="input" id="inputMinutes" type="number" min="1" max="600" value="30" required>
+          </div>
+          <div>
+            <label class="label">Routine Category</label>
+            <select class="input" id="inputCategory">
+              <option value="Prescription Rx">Prescription Rx</option>
+              <option value="Supplement">Supplement</option>
+              <option value="Diagnostic Lab">Diagnostic Lab</option>
+              <option value="Night Routine">Night Routine</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <button type="submit" class="btn" style="background:var(--accent); color:white; border-radius:var(--radius-sm); padding:10px 24px; cursor:pointer;">
+            ➕ Add to Schedule
+          </button>
+          
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button type="button" id="testAlarmBtn" class="btn" style="background:#F3F4F6; color:#374151; border:1px solid #D1D5DB; border-radius:var(--radius-sm); padding:10px 18px; cursor:pointer;">
+              ⏱️ Trigger 10s setTimeout Alarm Test
+            </button>
+            <span id="alarmStatus" style="font-size:0.85rem; color:var(--text-muted);">Status: Ready</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="chronoSync.js"></script>
+</body>
+</html>

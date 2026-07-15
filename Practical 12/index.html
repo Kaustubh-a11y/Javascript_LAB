@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 12 — Smart City Transit & Metro Bus Live Arrival Tracker</title>
+  <link rel="stylesheet" href="../shared/shared.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    :root {
+      --accent: #0284C7;
+      --accent-soft: #E0F2FE;
+      --bg-page: #F0F9FF;
+    }
+
+    .transit-banner {
+      background: linear-gradient(135deg, #0284C7 0%, #0F766E 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    .status-badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .controls-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: var(--shadow-xs);
+    }
+    .search-wrap {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .pinned-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .pinned-chip {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .unpin-btn {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .transit-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .transit-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .transit-card.pinned {
+      border: 2px solid #F59E0B;
+      background: #FFFDF7;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .route-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .btn-pin {
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      color: #D1D5DB;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .btn-pin.active {
+      color: #F59E0B;
+    }
+    .platform-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: -6px;
+    }
+    .arrival-display {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      margin: 2px 0;
+    }
+    .type-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--bg-input);
+      padding: 10px;
+      border-radius: var(--radius-xs);
+    }
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .m-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .m-val {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .m-val.crowd-low { color: #16A34A; }
+    .m-val.crowd-mod { color: #D97706; }
+    .m-val.crowd-high { color: #DC2626; }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .offline-notice {
+      display: none;
+      background: #FEE2E2;
+      color: #B91C1C;
+      border: 1px solid #FCA5A5;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <span class="badge" style="background:#E0F2FE; color:#0284C7;">Practical 12 (VA 12)</span>
+      <h1>Smart City Transit & Metro Bus Live Arrival Tracker</h1>
+      <p>Built with jQuery DOM Manipulation, Event Handlers, LocalStorage Caching, and AJAX GPS Live Streams.</p>
+    </header>
+
+    <!-- Transit Header Banner -->
+    <div class="transit-banner">
+      <div>
+        <div style="font-size:1.3rem; font-weight:700;">Urban Mobility & Metro Control Telemetry</div>
+        <div style="font-size:0.85rem; opacity:0.9; margin-top:4px;">Asynchronous AJAX Live Arrival Board | Nagpur Smart City Network</div>
+      </div>
+      <div class="status-badge-live">
+        <span id="pollStatus">🟢 GPS Telemetry Feed Online</span>
+      </div>
+    </div>
+
+    <!-- Offline Alert -->
+    <div class="offline-notice" id="offlineNotice">
+      ⚠️ AJAX Feed offline. Serving cached transit arrival times from local storage memory.
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="search-wrap">
+        <input class="input" id="searchInput" type="text" placeholder="🔍 Search route name, metro line, or station platform...">
+      </div>
+      
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button id="sortToggleBtn" class="btn" style="background:#FFFFFF; border:1px solid var(--border); padding:8px 16px; border-radius:var(--radius-sm); font-size:0.85rem; font-weight:600; cursor:pointer;">
+          Sort: By Arrival Time
+        </button>
+
+        <button id="refreshBtn" class="btn" style="background:var(--accent); color:white; border:none; padding:8px 18px; border-radius:var(--radius-sm); font-size:0.85rem; font-weight:600; cursor:pointer;">
+          🔄 AJAX Refresh
+        </button>
+
+        <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem; cursor:pointer; font-weight:500;">
+          <input type="checkbox" id="autoPollToggle" checked> Auto-Poll (5s)
+        </label>
+      </div>
+    </div>
+
+    <!-- LocalStorage Pinned Favorites Bar -->
+    <div class="card" style="margin-bottom:24px; padding:16px 20px;">
+      <div style="font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:8px;">
+        ⭐ Pinned Commute Routes (Saved in localStorage):
+      </div>
+      <div class="pinned-bar" id="pinnedList"></div>
+    </div>
+
+    <!-- Route Cards Grid -->
+    <div class="route-grid" id="routeGrid"></div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; color:var(--text-muted); padding:12px 0;">
+      <span>Last Asynchronous AJAX Sync: <strong id="lastUpdated">--:--:--</strong></span>
+      <span>Technology Stack: jQuery 3.7.1 + AJAX + Web Storage API</span>
+    </div>
+  </div>
+
+  <script src="transitTracker.js"></script>
+</body>
+</html>
