@@ -2,13 +2,6 @@
 
 A premium, modern collection of 10 interactive JavaScript laboratory practicals built using vanilla web technologies. Featuring advanced layouts, cohesive soft color palettes, a built-in Console Emulator system, and responsive web design patterns.
 
----
-
-## 👤 Student Information
-* **Name**: Kaustubh Kachole
-* **PRN**: 24070521098
-* **Batch**: 2024
-* **Institution**: Symbiosis Institute of Technology (SIT), Nagpur
 
 ---
 
